@@ -67,13 +67,6 @@ int main()
 
     unsigned char *im = loadPixels(archivoEntrada, width, height);
 
-    int total = width * height * 3;
-
-    // Buffers intermedios
-    unsigned char* p2_inv = new unsigned char[total];
-    unsigned char* p1_inv = new unsigned char[total];
-    unsigned char* io     = new unsigned char[total];
-
     // Exporta la imagen modificada a un nuevo archivo BMP
     bool exportI = exportImage(id, width, height, archivoSalida);
 
