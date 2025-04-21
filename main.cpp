@@ -44,33 +44,45 @@ unsigned int* loadSeedMasking(const char* nombreArchivo, int &seed, int &n_pixel
 int main()
 {
     // Definición de rutas de archivo de entrada (imagen original) y salida (imagen modificada)
-    QString archivoEntrada = "I_O.bmp";
-    QString archivoSalida = "I_D.bmp";
+    QString archivoEntrada = "I_D.bmp";
+    QString archivoSalida = "I_N.bmp";
 
     // Variables para almacenar las dimensiones de la imagen
     int height = 0;
     int width = 0;
 
     // Carga la imagen BMP en memoria dinámica y obtiene ancho y alto
-    unsigned char *pixelData = loadPixels(archivoEntrada, width, height);
+    unsigned char *id = loadPixels(archivoEntrada, width, height);
 
     // Simula una modificación de la imagen asignando valores RGB incrementales
     // (Esto es solo un ejemplo de manipulación artificial)
     for (int i = 0; i < width * height * 3; i += 3) {
-        pixelData[i] = i;     // Canal rojo
-        pixelData[i + 1] = i; // Canal verde
-        pixelData[i + 2] = i; // Canal azul
+        id[i] = i;     // Canal rojo
+        id[i + 1] = i; // Canal verde
+        id[i + 2] = i; // Canal azul
     }
 
+    int heiht2 = 0;
+    int width2 = 0;
+
+    unsigned char *im = loadPixels(archivoEntrada, width, height);
+
+    int total = width * height * 3;
+
+    // Buffers intermedios
+    unsigned char* p2_inv = new unsigned char[total];
+    unsigned char* p1_inv = new unsigned char[total];
+    unsigned char* io     = new unsigned char[total];
+
     // Exporta la imagen modificada a un nuevo archivo BMP
-    bool exportI = exportImage(pixelData, width, height, archivoSalida);
+    bool exportI = exportImage(id, width, height, archivoSalida);
 
     // Muestra si la exportación fue exitosa (true o false)
     cout << exportI << endl;
 
     // Libera la memoria usada para los píxeles
-    delete[] pixelData;
-    pixelData = nullptr;
+    delete[] id;
+    id = nullptr;
 
     // Variables para almacenar la semilla y el número de píxeles leídos del archivo de enmascaramiento
     int seed = 0;
@@ -267,16 +279,3 @@ unsigned int* loadSeedMasking(const char* nombreArchivo, int &seed, int &n_pixel
     // Retornar el puntero al arreglo con los datos RGB
     return RGB;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
