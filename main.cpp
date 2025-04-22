@@ -41,6 +41,16 @@ unsigned char* loadPixels(QString input, int &width, int &height);
 bool exportImage(unsigned char* pixelData, int width,int height, QString archivoSalida);
 unsigned int* loadSeedMasking(const char* nombreArchivo, int &seed, int &n_pixels);
 
+// Funciones de rotación
+unsigned char rotarIzquierda(unsigned char byte, int n) {
+    return (byte << n) | (byte >> (8 - n));
+}
+
+unsigned char rotarDerecha(unsigned char byte, int n) {
+    return (byte >> n) | (byte << (8 - n));
+}
+
+
 int main()
 {
     // Definición de rutas de archivo de entrada (imagen original) y salida (imagen modificada)
@@ -68,8 +78,30 @@ int main()
         p2_inv[i] = id[i] ^ im[i];
     }
 
+    // Paso: Preguntar al usuario cuántos bits y en qué dirección rotar
+    int rotacion = 0;
+    char direccion;
+
+    cout << "¿Cuántos bits deseas rotar? (0-7): ";
+    cin >> rotacion;
+
+    cout << "¿Dirección de rotación? (i = izquierda, d = derecha): ";
+    cin >> direccion;
+
+    // Reservar espacio para la imagen rotada
+    unsigned char* p1_inv = new unsigned char[total];
+
+    // Aplicar la rotación a cada byte
+    for (int i = 0; i < total; i++) {
+        if (direccion == 'i' || direccion == 'I') {
+            p1_inv[i] = rotarIzquierda(id[i], rotacion);
+        } else {
+            p1_inv[i] = rotarDerecha(id[i], rotacion);
+        }
+    }
+
     // Exporta la imagen modificada a un nuevo archivo BMP
-    bool exportI = exportImage(p2_inv, width, height, archivoSalida);
+    bool exportI = exportImage(p1_inv, width, height, archivoSalida);
 
     // Muestra si la exportación fue exitosa (true o false)
     cout << exportI << endl;
@@ -78,6 +110,7 @@ int main()
     delete[] id;
     delete[] im;
     delete[] p2_inv;
+    delete[] p1_inv;
 
     // Variables para almacenar la semilla y el número de píxeles leídos del archivo de enmascaramiento
     int seed = 0;
