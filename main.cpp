@@ -69,6 +69,7 @@ int main()
     }
 
    unsigned char* p1_inv = new unsigned char[total];
+
     // Función para rotar a la izquierda 3 bits
     auto rotarIzq3 = [](unsigned char b) {
         return (b << 3) | (b >> 5);
@@ -79,9 +80,15 @@ int main()
         p1_inv[i] = rotarIzq3(p2_inv[i]);
     }
 
+    unsigned char* io = new unsigned char[total];
+
+    // Paso 3: I_O = P1 XOR I_M
+    for (int i = 0; i < total; i++) {
+        io[i] = p1_inv[i] ^ im[i];
+    }
 
     // Exporta la imagen modificada a un nuevo archivo BMP
-    bool exportI = exportImage(p1_inv, width, height, archivoSalida);
+    bool exportI = exportImage(io, width, height, archivoSalida);
 
     // Muestra si la exportación fue exitosa (true o false)
     cout << exportI << endl;
@@ -91,6 +98,7 @@ int main()
     delete[] im;
     delete[] p2_inv;
     delete[] p1_inv;
+    delete[] io;
 
     // Variables para almacenar la semilla y el número de píxeles leídos del archivo de enmascaramiento
     int seed = 0;
