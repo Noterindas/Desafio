@@ -121,6 +121,23 @@ int main()
         return -1;
     }
 
+    // Compara S(k) = IN[k + seed] + M[k]
+    bool match = true;
+    for (int i = 0; i < n_pixels * 3; ++i) {
+        int suma = int(io[seed + i]) + int(mask[i]);
+        if (suma != int(maskingData[i])) {
+            cout << " Diferencia en byte " << i
+                 << ": esperado " << maskingData[i]
+                 << ", obtenido " << suma << endl;
+            match = false;
+            break;
+        }
+    }
+
+    if (match == true)
+        cout << " IN.bmp coincide con M1.txt al aplicar enmascaramiento.\n";
+    else
+        cout << " IN.bmp NO coincide con M1.txt\n";
     // Muestra en consola los primeros valores RGB leídos desde el archivo de enmascaramiento
     for (int i = 0; i < n_pixels * 3; i += 3) {
         cout << "Pixel " << i / 3 << ": ("
