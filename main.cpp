@@ -76,23 +76,35 @@ int main()
         p2_inv[i] = id[i] ^ im[i];
     }
 
-   unsigned char* p1_inv = new unsigned char[total];
+    unsigned char* p1_inv = new unsigned char[total];
 
     // Función para rotar a la izquierda 3 bits
-    auto rotarIzq3 = [](unsigned char b) {
+    auto rotar = [](unsigned char b) {
         return (b << 3) | (b >> 5);
     };
 
     // Paso 2: P1 = rotar izquierda 3 bits
     for (int i = 0; i < total; i++) {
-        p1_inv[i] = rotarIzq3(p2_inv[i]);
+        p1_inv[i] = rotar(p2_inv[i]);
+    }
+
+    unsigned char* dspzar = new unsigned char[total];
+
+    // Función para rotar a la izquierda 3 bits
+    auto desplazar = [](unsigned char b) {
+        return b << 0;
+    };
+
+    // Paso 2: P1 = rotar izquierda 3 bits
+    for (int i = 0; i < total; i++) {
+        dspzar[i] = desplazar(p1_inv[i]);
     }
 
     unsigned char* io = new unsigned char[total];
 
     // Paso 3: I_O = P1 XOR I_M
     for (int i = 0; i < total; i++) {
-        io[i] = p1_inv[i] ^ im[i];
+        io[i] = dspzar[i] ^ im[i];
     }
 
     // Exporta la imagen modificada a un nuevo archivo BMP
@@ -152,12 +164,12 @@ int main()
     delete[] p2_inv;
     delete[] p1_inv;
     delete[] io;
+    delete[] dspzar;
     delete[] mask;
     delete[] maskingData;
 
     return 0; // Fin del programa
 }
-
 
 unsigned char* loadPixels(QString input, int &width, int &height){
     /*
