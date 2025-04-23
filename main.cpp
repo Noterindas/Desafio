@@ -71,38 +71,35 @@ int main()
     int total = width * height * 3;
     unsigned char* p2_inv = new unsigned char[total];
 
-    // Paso 1: P2 = I_D XOR I_M
+    // Funcion para aplicar XOR
     for (int i = 0; i < total; i++) {
         p2_inv[i] = id[i] ^ im[i];
     }
 
     unsigned char* p1_inv = new unsigned char[total];
 
-    // Función para rotar a la izquierda 3 bits
+    // Función para rotar
     auto rotar = [](unsigned char b) {
         return (b << 3) | (b >> 5);
     };
 
-    // Paso 2: P1 = rotar izquierda 3 bits
     for (int i = 0; i < total; i++) {
         p1_inv[i] = rotar(p2_inv[i]);
     }
 
     unsigned char* dspzar = new unsigned char[total];
 
-    // Función para rotar a la izquierda 3 bits
+    // Función para dazplazar
     auto desplazar = [](unsigned char b) {
         return b << 0;
     };
 
-    // Paso 2: P1 = rotar izquierda 3 bits
     for (int i = 0; i < total; i++) {
         dspzar[i] = desplazar(p1_inv[i]);
     }
 
     unsigned char* io = new unsigned char[total];
 
-    // Paso 3: I_O = P1 XOR I_M
     for (int i = 0; i < total; i++) {
         io[i] = dspzar[i] ^ im[i];
     }
