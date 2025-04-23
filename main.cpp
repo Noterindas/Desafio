@@ -121,7 +121,6 @@ int main()
         return -1;
     }
 
-
     // Muestra en consola los primeros valores RGB leídos desde el archivo de enmascaramiento
     for (int i = 0; i < n_pixels * 3; i += 3) {
         cout << "Pixel " << i / 3 << ": ("
@@ -136,6 +135,8 @@ int main()
     delete[] p2_inv;
     delete[] p1_inv;
     delete[] io;
+    delete[] mask;
+    delete[] maskingData;
 
     return 0; // Fin del programa
 }
