@@ -121,32 +121,14 @@ int main()
 
     // Variables para almacenar la semilla y el número de píxeles leídos del archivo de enmascaramiento
     // Carga los datos de enmascaramiento desde un archivo .txt (semilla + valores RGB)
-    // Carga M1.txt (semilla y valores enmascarados)
     int seed = 0;
     int n_pixels = 0;
     unsigned int *maskingData = loadSeedMasking("M0.txt", seed, n_pixels);
     if (!maskingData) {
-        cout << " No se pudo leer M1.txt\n";
+        cout << " No se pudo leer el .txt\n";
         return -1;
     }
 
-    // Compara S(k) = IN[k + seed] + M[k]
-    bool match = true;
-    for (int i = 0; i < n_pixels * 3; ++i) {
-        int suma = int(io[seed + i]) + int(mask[i]);
-        if (suma != int(maskingData[i])) {
-            cout << " Diferencia en byte " << i
-                 << ": esperado " << maskingData[i]
-                 << ", obtenido " << suma << endl;
-            match = false;
-            break;
-        }
-    }
-
-    if (match == true)
-        cout << " IN.bmp coincide con M1.txt al aplicar enmascaramiento.\n";
-    else
-        cout << " IN.bmp NO coincide con M1.txt\n";
     // Muestra en consola los primeros valores RGB leídos desde el archivo de enmascaramiento
     for (int i = 0; i < n_pixels * 3; i += 3) {
         cout << "Pixel " << i / 3 << ": ("
@@ -154,6 +136,26 @@ int main()
              << maskingData[i + 1] << ", "
              << maskingData[i + 2] << ")" << endl;
     }
+
+    // Compara S(k) = IN[k + seed] + M[k]
+    bool match = true;
+    for (int i = 0; i < n_pixels * 3; ++i) {
+        int suma = int(io[seed + i]) + int(mask[i]);
+        if (suma != int(maskingData[i])) {
+            cout << "Diferencia en byte " << i
+                 << ": esperado " << maskingData[i]
+                 << ", obtenido " << suma << endl;
+            match = false;
+            break;
+        }
+    }
+
+    cout << endl;
+
+    if (match == true)
+        cout << "IN.bmp coincide con el .txt al aplicar enmascaramiento.\n";
+    else
+        cout << "IN.bmp NO coincide con el .txt\n";
 
     // Libera la memoria
     delete[] id;
