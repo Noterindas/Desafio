@@ -104,12 +104,6 @@ int main()
         io[i] = dspzar[i] ^ im[i];
     }
 
-    // Exporta la imagen modificada a un nuevo archivo BMP
-    bool exportI = exportImage(io, width, height, archivoSalida);
-
-    // Muestra si la exportación fue exitosa (true o false)
-    cout << exportI << endl;
-
     // Carga la máscara M.bmp
     int height3 = 0;
     int width3 = 0;
@@ -152,8 +146,15 @@ int main()
 
     cout << endl;
 
-    if (match == true)
+    if (match == true){
         cout << "IN.bmp coincide con el .txt al aplicar enmascaramiento.\n";
+
+        // Exporta la imagen modificada a un nuevo archivo BMP
+        bool exportI = exportImage(io, width, height, archivoSalida);
+
+        // Muestra si la exportación fue exitosa (true o false)
+        cout << exportI << endl;
+    }
     else
         cout << "IN.bmp NO coincide con el .txt\n";
 
